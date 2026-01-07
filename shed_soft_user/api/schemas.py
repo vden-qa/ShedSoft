@@ -5,6 +5,10 @@ class SUserId(BaseModel):
     user_id: str
 
 
+class AddRealm(BaseModel):
+    realm_name: str
+
+
 class AddUser(BaseModel):
     id: str
     email: str
@@ -13,7 +17,7 @@ class AddUser(BaseModel):
     preferred_username: str
     given_name: str
     family_name: str
-    realm_name: str
+    realm_id: int
 
 
 class AddNote(BaseModel):

@@ -9,12 +9,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from shed_soft_user.api.schemas import (
     AddNote,
     AddNoteWithUserId,
+    AddRealm,
     AddUser,
     NoteResponse,
     SUserId,
 )
 from shed_soft_user.config import settings
-from shed_soft_user.dao.dao import NotesDAO, UsersDAO
+from shed_soft_user.dao.dao import NotesDAO, RealmDAO, UsersDAO
 from shed_soft_user.services.auth_dep import get_current_user, get_keycloak_client
 from shed_soft_user.services.dao_dep import (
     get_session_with_commit,
@@ -71,6 +72,12 @@ async def login_callback(
         issuer = decoded_token.get("iss", "")
         realm_name = issuer.split("/realms/")[-1] if "/realms/" in issuer else ""
         
+        # Найти или создать realm
+        realms_dao = RealmDAO(session)
+        realm = await realms_dao.find_one_or_none(AddRealm(realm_name=realm_name))
+        if not realm:
+            realm = await realms_dao.add(AddRealm(realm_name=realm_name))
+        
         # Проверка существования пользователя, создание нового при необходимости
         users_dao = UsersDAO(session)
         user = await users_dao.find_one_or_none_by_id(user_id)
@@ -83,7 +90,7 @@ async def login_callback(
                 "preferred_username": user_info.get("preferred_username", ""),
                 "given_name": user_info.get("given_name", ""),
                 "family_name": user_info.get("family_name", ""),
-                "realm_name": realm_name,
+                "realm_id": realm.id,
             }
             await users_dao.add(AddUser(**user_data))
 

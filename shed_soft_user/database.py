@@ -1,7 +1,7 @@
 import logging
 from shed_soft_user.dao.base_model import Base
 # Импортируем модели, чтобы они зарегистрировались в Base.metadata
-from shed_soft_user.dao.models import User, Note  # noqa: F401
+from shed_soft_user.dao.models import User, Note, Realm  # noqa: F401
 
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from typing import AsyncGenerator
