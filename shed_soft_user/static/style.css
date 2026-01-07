@@ -2,14 +2,6 @@ body {
   font-family: 'Roboto', sans-serif;
   background-color: #1a1a1a;
   color: #e0e0e0;
-  background-image: linear-gradient(
-      rgba(26, 26, 26, 0.85),
-      rgba(26, 26, 26, 0.9)
-    ),
-    url('/a/56a3a43a-8326-4fb6-9808-4df6529979f3');
-  background-size: cover;
-  background-attachment: fixed;
-  background-position: center center;
   line-height: 1.7;
   margin: 0;
   padding: 0;

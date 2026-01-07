@@ -65,6 +65,12 @@ async def login_callback(
         if not user_id:
             raise HTTPException(status_code=401, detail="ID пользователя не найден")
 
+        # Декодируем токен для извлечения realm_name
+        import jwt
+        decoded_token = jwt.decode(access_token, options={"verify_signature": False})
+        issuer = decoded_token.get("iss", "")
+        realm_name = issuer.split("/realms/")[-1] if "/realms/" in issuer else ""
+        
         # Проверка существования пользователя, создание нового при необходимости
         users_dao = UsersDAO(session)
         user = await users_dao.find_one_or_none_by_id(user_id)
@@ -77,6 +83,7 @@ async def login_callback(
                 "preferred_username": user_info.get("preferred_username", ""),
                 "given_name": user_info.get("given_name", ""),
                 "family_name": user_info.get("family_name", ""),
+                "realm_name": realm_name,
             }
             await users_dao.add(AddUser(**user_data))
 

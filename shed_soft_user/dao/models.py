@@ -15,6 +15,7 @@ class User(Base):
     preferred_username: Mapped[str] = mapped_column(default="")
     given_name: Mapped[str] = mapped_column(default="")
     family_name: Mapped[str] = mapped_column(default="")
+    realm_name: Mapped[str] = mapped_column(default="")
     notes: Mapped[list["Note"]] = relationship(
         back_populates="user",
         init=False,

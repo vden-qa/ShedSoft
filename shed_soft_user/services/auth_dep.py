@@ -1,3 +1,4 @@
+import jwt
 from fastapi import Depends, HTTPException, Request
 from pydantic import BaseModel
 
@@ -13,6 +14,7 @@ class UserInfo(BaseModel):
     given_name: str | None = None
     family_name: str | None = None
     email_verified: bool | None = None
+    realm_name: str | None = None
 
 
 # ✅ Получаем KeycloakClient из app.state
@@ -35,6 +37,13 @@ async def get_current_user(
         raise HTTPException(status_code=401, detail="Unauthorized: No access token")
 
     try:
+        # Декодируем токен без проверки подписи для извлечения realm_name
+        decoded_token = jwt.decode(token, options={"verify_signature": False})
+        
+        # Извлекаем realm name из iss: "http://localhost:8080/realms/my-realm"
+        issuer = decoded_token.get("iss", "")
+        realm_name = issuer.split("/realms/")[-1] if "/realms/" in issuer else ""
+        
         user_info = await keycloak.get_user_info(token)
         
         # Проверяем наличие обязательного поля sub (user_id)
@@ -43,6 +52,9 @@ async def get_current_user(
                 status_code=401,
                 detail="Invalid user info: missing 'sub' field"
             )
+        
+        # Добавляем realm_name в user_info
+        user_info["realm_name"] = realm_name
         
         # Возвращаем dict напрямую для совместимости с существующим кодом
         return user_info

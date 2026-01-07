@@ -13,6 +13,7 @@ class AddUser(BaseModel):
     preferred_username: str
     given_name: str
     family_name: str
+    realm_name: str
 
 
 class AddNote(BaseModel):
