@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>СНТ "Зеленая Долина" - Официальный сайт</title>
+    <style>
+        /* СБРОС СТИЛЕЙ */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background-color: #f9fdf9; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* ПЕРЕМЕННЫЕ ЦВЕТОВ */
+        :root {
+            --primary-green: #2e7d32;
+            --dark-green: #1b5e20;
+            --accent-brown: #8d6e63;
+            --light-bg: #e8f5e9;
+            --white: #ffffff;
+            --text-grey: #555;
+        }
+
+        /* ШАПКА */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-green);
+            display: flex;
+            align-items: center;
+        }
+        .logo span { color: var(--accent-brown); margin-left: 5px; }
+
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a {
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--primary-green); }
+
+        .btn-cabinet {
+            background-color: var(--primary-green);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            transition: background 0.3s;
+        }
+        .btn-cabinet:hover { background-color: var(--dark-green); }
+
+        /* ГЛАВНЫЙ ЭКРАН (HERO) */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-top: 60px;
+        }
+        .hero-content h1 { font-size: 3rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .hero-content p { font-size: 1.2rem; margin-bottom: 2rem; }
+        .btn-main {
+            background-color: var(--accent-brown);
+            color: white;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-main:hover { background-color: #6d4c41; }
+
+        /* СЕКЦИИ */
+        .container { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--dark-green);
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--accent-brown);
+            margin: 10px auto 0;
+        }
+
+        /* НОВОСТИ */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .news-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        .news-card:hover { transform: translateY(-5px); }
+        .news-date { background: var(--light-bg); color: var(--dark-green); padding: 5px 15px; font-size: 0.9rem; display: inline-block; }
+        .news-content { padding: 1.5rem; }
+        .news-content h3 { margin-bottom: 0.5rem; color: #333; }
+
+        /* БЫСТРЫЕ ДЕЙСТВИЯ */
+        .actions-section { background-color: var(--light-bg); }
+        .actions-grid {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        .action-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            width: 250px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .action-icon { font-size: 2.5rem; color: var(--primary-green); margin-bottom: 1rem; }
+        .action-card h4 { margin-bottom: 1rem; }
+
+        /* ПОДВАЛ */
+        footer {
+            background-color: var(--dark-green);
+            color: white;
+            padding: 3rem 2rem;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .footer-col h4 { margin-bottom: 1rem; color: #a5d6a7; }
+        .footer-col p, .footer-col li { margin-bottom: 0.5rem; opacity: 0.9; }
+
+        /* АДАПТИВНОСТЬ */
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; gap: 1rem; }
+            .nav-links { flex-wrap: wrap; justify-content: center; }
+            .hero h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ШАПКА -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">🌲 СНТ <span>"Зеленая Долина"</span></div>
+            <ul class="nav-links">
+                <li><a href="#">Главная</a></li>
+                <li><a href="#">О кооперативе</a></li>
+                <li><a href="#">Документы</a></li>
+                <li><a href="#">Участки</a></li>
+                <li><a href="#">Контакты</a></li>
+            </ul>
+            <a href="#" class="btn-cabinet">Личный кабинет</a>
+        </nav>
+    </header>
+
+    <!-- ГЛАВНЫЙ ЭКРАН -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Ваш уютный уголок природы</h1>
+            <p>Садоводческое некоммерческое товарищество в экологически чистом районе<br>с удобной инфраструктурой и отличными соседями.</p>
+            <button class="btn-main">Продажа участков</button>
+        </div>
+    </section>
+
+    <!-- БЫСТРЫЕ ДЕЙСТВИЯ (ВАЖНО ДЛЯ ЖИТЕЛЕЙ) -->
+    <section class="actions-section">
+        <div class="container">
+            <h2 class="section-title">Садоводам в один клик</h2>
+            <div class="actions-grid">
+                <div class="action-card">
+                    <div class="action-icon">💧</div>
+                    <h4>Подать показания</h4>
+                    <p>Передайте данные счетчиков воды и электроэнергии</p>
+                </div>
+                <div class="action-card">
+                    <div class="action-icon">💳</div>
+                    <h4>Оплатить взнос</h4>
+                    <p>Внести членские и целевые платежи онлайн</p>
+                </div>
+                <div class="action-card">
+                    <div class="action-icon">📢</div>
+                    <h4>Задать вопрос</h4>
+                    <p>Написать председателю или диспетчеру</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- НОВОСТИ -->
+    <section class="container">
+        <h2 class="section-title">Новости кооператива</h2>
+        <div class="news-grid">
+            <div class="news-card">
+                <span class="news-date">24 мая 2024</span>
+                <div class="news-content">
+                    <h3>Общее собрание собственников</h3>
+                    <p>Уважаемые садоводы, приглашаем вас на очередное собрание, которое состоится 15 июня в 10:00 у центральной будки.</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <span class="news-date">20 мая 2024</span>
+                <div class="news-content">
+                    <h3>Отключение электроэнергии</h3>
+                    <p>В связи с ремонтом трансформатора, 25 мая с 09:00 до 14:00 будет прекращена подача электроэнергии.</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <span class="news-date">15 мая 2024</span>
+                <div class="news-content">
+                    <h3>Закупка удобрений</h3>
+                    <p>Товарищество организует совместную закупку качественного перегноя. Заявки принимаются до 20 мая.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ИНФРАСТРУКТУРА -->
+    <section class="container">
+        <h2 class="section-title">Инфраструктура и услуги</h2>
+        <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+            <div style="background: white; padding: 20px; border-radius: 8px; width: 30%; min-width: 250px; text-align: center; border: 1px solid #eee;">
+                <h3 style="color: var(--primary-green);">🚔 Охрана и КПП</h3>
+                <p style="margin-top: 10px;">Круглосуточная охрана, пропускной режим, шлагбаум.</p>
+            </div>
+            <div style="background: white; padding: 20px; border-radius: 8px; width: 30%; min-width: 250px; text-align: center; border: 1px solid #eee;">
+                <h3 style="color: var(--primary-green);">🛒 Магазин</h3>
+                <p style="margin-top: 10px;">Продуктовый магазин на территории СНТ (центральная улица).</p>
+            </div>
+            <div style="background: white; padding: 20px; border-radius: 8px; width: 30%; min-width: 250px; text-align: center; border: 1px solid #eee;">
+                <h3 style="color: var(--primary-green);">⚡ Коммуникации</h3>
+                <p style="margin-top: 10px;">Магистральный газ (по границе), центральный водопровод.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ПОДВАЛ -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h4>СНТ "Зеленая Долина"</h4>
+                <p>Официальный сайт товарищества.<br>Московская область, Подольский район.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Контакты</h4>
+                <ul>
+                    <li>Председатель: +7 (999) 000-00-00</li>
+                    <li>Диспетчер: +7 (999) 111-11-11</li>
+                    <li>Электрик: +7 (999) 222-22-22</li>
+                    <li>admin@greenvalley.ru</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Документы</h4>
+                <ul>
+                    <li><a href="#">Устав СНТ</a></li>
+                    <li><a href="#">Протоколы собраний</a></li>
+                    <li><a href="#">Заключение договора</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

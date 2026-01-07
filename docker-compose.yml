@@ -14,8 +14,30 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: unless-stopped
+    networks:
+      - shedsoft_network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-keycloak} || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres_user:
+    container_name: shedsoft_postgres_user
+    image: postgres:17.4
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_USER_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_USER_DB:-shed_soft_user}
+    ports:
+      - "${POSTGRES_USER_PORT:-5433}:5432"  # используем другой порт на хосте
+    volumes:
+      - pgdata_user:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - shedsoft_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER_USER:-postgres} -d ${POSTGRES_USER_DB:-shed_soft_user} || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -43,8 +65,10 @@ services:
     command:
       - start-dev
     restart: unless-stopped
+    networks:
+      - shedsoft_network
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080/ || exit 1"]
+      test: ["CMD-SHELL", "timeout 5 bash -c '</dev/tcp/localhost/8080' || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -55,10 +79,14 @@ networks:
 
 volumes:
   pgdata:
+  pgdata_user:
   keycloak_data:
 
 # Рекомендации:
-# - Добавьте .env (или .env.example) с переменными: POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT, KEYCLOAK_HTTP_PORT, KC_BOOTSTRAP_ADMIN_USERNAME, KC_BOOTSTRAP_ADMIN_PASSWORD
+# - Добавьте .env с переменными:
+#   Keycloak DB: POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT
+#   User Service DB: POSTGRES_USER_USER, POSTGRES_USER_PASSWORD, POSTGRES_USER_DB, POSTGRES_USER_PORT
+#   Keycloak: KEYCLOAK_HTTP_PORT, KC_BOOTSTRAP_ADMIN_USERNAME, KC_BOOTSTRAP_ADMIN_PASSWORD
 # - Если нужны миграции/инициализация БД, добавьте отдельный init-сервис или выполняйте миграции при старте приложения
 # - Для более надёжного ожидания можно использовать скрипт wait-for-it, если healthcheck недостаточен
 
